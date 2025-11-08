@@ -6,11 +6,13 @@ Express 5 backend API for the CRM application.
 
 - **Express 5.1.0** - Fast, unopinionated web framework
 - **TypeScript 5.9.3** - Type-safe JavaScript
+- **TSOA 6.6.0** - OpenAPI/Swagger documentation & runtime validation
 - **Zod 4.1.12** - Schema validation (latest)
 - **dotenv 17.2.3** - Environment variables
 - **Vitest 4.0.8** - Unit testing
 - **Prisma 6.19.0** - Database ORM
 - **PostgreSQL 18** - Database (via Docker)
+- **Swagger UI 5.0.1** - Interactive API documentation
 
 ## Setup
 
@@ -132,8 +134,22 @@ pnpm test:ui
 
 See [TESTING.md](./TESTING.md) for detailed testing guide.
 
+## API Documentation
+
+- 📚 **Swagger UI**: http://localhost:3000/api-docs (Interactive API docs)
+- 📄 **OpenAPI Spec**: http://localhost:3000/swagger.json
+- 🏥 **Health Check**: http://localhost:3000/health
+
+See [TSOA_SETUP.md](./TSOA_SETUP.md) for TSOA integration details.
+
 ## API Endpoints
 
-- `GET /health` - Health check endpoint
-- `GET /` - Root endpoint with API information
+All customer endpoints are documented in Swagger UI at `/api-docs`:
+
+- `GET /api/customers` - Get all customers
+- `GET /api/customers/count` - Get customer count
+- `GET /api/customers/:id` - Get customer by ID
+- `POST /api/customers` - Create new customer
+- `PUT /api/customers/:id` - Update customer
+- `DELETE /api/customers/:id` - Delete customer
 

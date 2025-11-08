@@ -1,11 +1,12 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
-import { CustomerController } from "./controllers/customer.controller";
+import swaggerUi from "swagger-ui-express";
+import { CustomerController } from "./controllers/customerController";
 import { PrismaClient } from "./generated/prisma";
+import { RegisterRoutes } from "./generated/routes";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler";
 import { CustomerRepository } from "./repositories/customer.repository";
-import { createCustomerRoutes } from "./routes/customer.routes";
 import { CustomerService } from "./services/customer.service";
 
 dotenv.config();
@@ -40,20 +41,38 @@ app.get("/health", (_req: Request, res: Response) => {
   });
 });
 
+// Swagger documentation
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: "/swagger.json",
+    },
+  })
+);
+
+// Serve swagger.json
+app.get("/swagger.json", (_req: Request, res: Response) => {
+  res.sendFile(`${__dirname}/generated/swagger.json`);
+});
+
 // Root endpoint
 app.get("/", (_req: Request, res: Response) => {
   res.status(200).json({
     message: "CRM API Server",
     version: "1.0.0",
+    documentation: "/api-docs",
     endpoints: {
       health: "/health",
       customers: "/api/customers",
+      swagger: "/swagger.json",
     },
   });
 });
 
-// API Routes
-app.use("/api/customers", createCustomerRoutes(customerController));
+// Register TSOA routes
+RegisterRoutes(app);
 
 // Error handling
 app.use(notFoundHandler);

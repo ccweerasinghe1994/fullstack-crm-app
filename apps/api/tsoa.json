@@ -1,0 +1,29 @@
+{
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**/*Controller.ts"],
+  "spec": {
+    "outputDirectory": "src/generated",
+    "specVersion": 3,
+    "name": "CRM API",
+    "version": "1.0.0",
+    "description": "Full-stack CRM Application API",
+    "license": "MIT",
+    "contact": {
+      "name": "API Support",
+      "email": "support@crm.local"
+    },
+    "securityDefinitions": {},
+    "schemes": ["http", "https"]
+  },
+  "routes": {
+    "routesDir": "src/generated",
+    "middleware": "express",
+    "iocModule": "./src/controllers/ioc"
+  },
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}
+
