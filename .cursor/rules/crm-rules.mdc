@@ -157,6 +157,121 @@ import { Button } from "@crm/ui";
 import { cn } from "@crm/ui";
 ```
 
+## Documentation Structure
+
+**Organization Pattern:**
+Documentation is organized into two main locations based on scope:
+
+### 1. Project-Wide Documentation (`docs/`)
+
+Located at the root level for project-wide documentation:
+
+```
+docs/
+├── README.md              # Index for project-wide docs
+├── DOCKER.md             # Docker setup and infrastructure
+├── PROJECT_STRUCTURE.md  # Complete monorepo structure
+└── prd-prep.md          # Tech stack decisions & PRD
+```
+
+**When to use:**
+- Infrastructure setup (Docker, CI/CD)
+- Project architecture and structure
+- Cross-cutting concerns (authentication, deployment)
+- Product requirements and tech stack decisions
+
+### 2. Application-Specific Documentation (`apps/{app}/docs/`)
+
+Each application has its own `docs/` folder organized by category:
+
+```
+apps/api/docs/
+├── README.md             # Index for API documentation
+├── setup/                # Setup & Configuration
+│   ├── PRISMA_SETUP.md
+│   ├── TSOA_SETUP.md
+│   ├── VITEST_SETUP_SUMMARY.md
+│   ├── MIGRATION_*.md
+│   └── DATABASE_STATUS.md
+├── api/                  # API Reference & Implementation
+│   ├── API_DOCUMENTATION.md
+│   └── IMPLEMENTATION_SUMMARY.md
+└── guides/               # Development Guides & Best Practices
+    ├── DEVELOPMENT_WORKFLOW.md
+    ├── TESTING.md
+    └── *_QUICKSTART.md
+```
+
+**Category Guidelines:**
+
+**`setup/`** - Initial configuration and setup guides:
+- Tool/framework setup (Prisma, TSOA, Vitest, etc.)
+- Migration guides
+- Database configuration
+- Environment setup
+- Dependency installation
+
+**`api/`** (or equivalent for other apps) - Core functionality documentation:
+- API endpoint reference
+- Implementation details
+- Architecture patterns
+- Data models and schemas
+- Integration guides
+
+**`guides/`** - Developer workflow and best practices:
+- Development workflows
+- Testing strategies
+- Debugging guides
+- Best practices
+- Quick reference guides
+
+**Documentation Rules:**
+
+1. **File Naming:**
+   - Use UPPERCASE with underscores: `SETUP_GUIDE.md`
+   - Descriptive names: `PRISMA_SETUP.md` not `SETUP.md`
+   - Suffix guides with `_GUIDE.md`, quickstarts with `_QUICKSTART.md`
+   - Migration docs: `MIGRATION_TOOL_VERSION.md`
+
+2. **Always Include README:**
+   - Each `docs/` folder MUST have a `README.md` index
+   - Index should explain structure and link to all documents
+   - Include quick links to most important docs
+
+3. **Content Organization:**
+   - Start with a clear title and description
+   - Use consistent heading hierarchy (H1 for title, H2 for sections)
+   - Include table of contents for long documents
+   - Add "Quick Start" or "TL;DR" section at the top
+   - Link to related documentation
+
+4. **Keep READMEs at Package Level:**
+   - `apps/api/README.md` - API package overview (NOT in docs/)
+   - `apps/web/README.md` - Frontend package overview (NOT in docs/)
+   - `packages/*/README.md` - Package overview (NOT in docs/)
+   - Use READMEs for quick reference; detailed docs go in `docs/`
+
+5. **Update References:**
+   - When moving docs, update all links in README files
+   - Update links in other documentation
+   - Check for references in code comments
+
+6. **Examples:**
+
+```markdown
+# Good Documentation Structure
+apps/api/docs/setup/PRISMA_SETUP.md          ✅
+apps/api/docs/guides/TESTING_GUIDE.md        ✅
+apps/api/docs/api/ENDPOINTS.md               ✅
+docs/DOCKER_GUIDE.md                         ✅
+
+# Bad Documentation Structure
+apps/api/SETUP.md                            ❌ (should be in docs/setup/)
+apps/api/docs/prisma.md                      ❌ (unclear category)
+docs/api-endpoints.md                        ❌ (app-specific, should be in apps/api/docs/)
+apps/api/docs/docker.md                      ❌ (project-wide, should be in root docs/)
+```
+
 ## Development Workflow
 
 **Commands:**

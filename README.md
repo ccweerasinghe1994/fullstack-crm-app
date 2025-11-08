@@ -87,7 +87,9 @@ pnpm dev:web  # Frontend only (http://localhost:5173)
 - Backend API: http://localhost:3000
   - Health check: http://localhost:3000/health
   - Customer API: http://localhost:3000/api/customers
-  - **[API Documentation](apps/api/API_DOCUMENTATION.md)**
+  - **[API Documentation](apps/api/docs/)**
+  - Swagger UI: http://localhost:3000/api-docs
+  - OpenAPI Spec: http://localhost:3000/swagger.json
 - PostgreSQL: localhost:5432 (User: `crm_user`, Password: `crm_password`, DB: `crm_db`)
 - pgAdmin: http://localhost:5050 (Email: `admin@crm.local`, Password: `admin`)
 - Prisma Studio: http://localhost:5555 (Run: `cd apps/api && pnpm prisma:studio`)
@@ -193,12 +195,17 @@ import { API_ENDPOINTS } from "@crm/shared/constants";
 
 ### Documentation
 
-- 📚 [API Documentation](apps/api/API_DOCUMENTATION.md) - Complete API reference with examples
-- 📚 [Implementation Summary](apps/api/IMPLEMENTATION_SUMMARY.md) - Architecture and implementation details
-- 📚 [Prisma Setup Guide](apps/api/PRISMA_SETUP.md) - Database setup and management
-- 📚 [Database Status](apps/api/DATABASE_STATUS.md) - Current database state
-- 📚 [Docker Guide](DOCKER.md) - Docker setup and troubleshooting
-- 📚 [Project Structure](PROJECT_STRUCTURE.md) - Detailed project overview
+- 📚 **Backend API**: [apps/api/docs/](apps/api/docs/) - Complete API documentation
+  - [API Reference](apps/api/docs/api/API_DOCUMENTATION.md) - Endpoints and examples
+  - [Implementation Summary](apps/api/docs/api/IMPLEMENTATION_SUMMARY.md) - Architecture details
+  - [Setup Guides](apps/api/docs/setup/) - Prisma, TSOA, Vitest, Database
+  - [Development Guides](apps/api/docs/guides/) - Workflow, Testing, Best Practices
+
+- 📚 **Project Documentation**: [docs/](docs/)
+  - [Docker Guide](docs/DOCKER.md) - Docker setup and troubleshooting
+  - [Project Structure](docs/PROJECT_STRUCTURE.md) - Detailed project overview
+  - [PRD & Tech Stack](docs/prd-prep.md) - Product requirements and tech decisions
+  - [Completion Summary](docs/COMPLETION_SUMMARY.md) - Project milestones
 
 ## 🔜 Next Steps
 
