@@ -213,7 +213,7 @@ pnpm test:e2e
 
 ### Shared Packages
 - **@crm/ui**: shadcn/ui components, Lucide icons, CVA
-- **@crm/shared**: Zod 3.24.1, TypeScript types
+- **@crm/shared**: Zod 4.1.12 (latest), TypeScript types
 
 ## Next Steps
 

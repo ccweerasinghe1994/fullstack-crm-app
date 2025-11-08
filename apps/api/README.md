@@ -5,8 +5,10 @@ Express 5 backend API for the CRM application.
 ## Tech Stack
 
 - **Express 5.1.0** - Fast, unopinionated web framework
-- **TypeScript 5.7.2** - Type-safe JavaScript
-- **Zod 3.24.1** - Schema validation
+- **TypeScript 5.9.3** - Type-safe JavaScript
+- **Zod 4.1.12** - Schema validation (latest)
+- **dotenv 17.2.3** - Environment variables
+- **Vitest 4.0.8** - Unit testing
 - **Prisma** (planned) - Database ORM
 - **PostgreSQL** (planned) - Database
 

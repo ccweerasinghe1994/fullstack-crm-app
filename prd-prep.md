@@ -262,21 +262,24 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 **Core:**
 - Node.js
 - Express 5.1.0 (latest)
-- TypeScript 5.7.2
+- TypeScript 5.9.3
 
 **Database:**
 - PostgreSQL
 - Prisma ORM (latest)
 
 **Validation & Utilities:**
-- Zod 3.24.1
-- dotenv 16.4.7
+- Zod 4.1.12 (latest)
+- dotenv 17.2.3 (latest)
 - cors 2.8.5
 
 **Development Tools:**
 - ts-node 10.9.2
 - ts-node-dev 2.0.0 (hot reload)
-- Vitest 1.0.4 (unit tests)
+- Vitest 4.0.8 (unit tests)
+- @types/node 24.10.0
+- @types/express 5.0.5
+- @types/cors 2.8.19
 
 **Architecture:**
 - Repository Pattern
