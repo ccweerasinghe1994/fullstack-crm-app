@@ -54,10 +54,18 @@ frenchCompanyInterview/
 │   └── rules/
 │       └── crm-rules.mdc          # Main project rules
 │
+├── scripts/
+│   ├── dev-setup.sh               # Development setup (Unix)
+│   └── dev-setup.ps1              # Development setup (Windows)
+│
+├── docker-compose.yml              # Docker services configuration
+├── .dockerignore                   # Docker ignore rules
+├── .env.example                    # Environment variables template
 ├── pnpm-workspace.yaml             # Workspace configuration
 ├── package.json                    # Root package.json
 ├── .gitignore                      # Git ignore rules
 ├── README.md                       # Main documentation
+├── DOCKER.md                       # Docker setup guide
 └── PROJECT_STRUCTURE.md            # This file
 
 ```
@@ -215,15 +223,55 @@ pnpm test:e2e
 - **@crm/ui**: shadcn/ui components, Lucide icons, CVA
 - **@crm/shared**: Zod 4.1.12 (latest), TypeScript types
 
+## Docker Services
+
+The project includes Docker Compose for local development:
+
+### Services
+- **PostgreSQL 16**: Database server (Port: 5432)
+- **pgAdmin 4**: Database management UI (Port: 5050)
+
+### Quick Start
+
+```bash
+# Start services
+pnpm docker:up
+
+# View logs
+pnpm docker:logs
+
+# Stop services
+pnpm docker:down
+
+# Reset (remove volumes)
+pnpm docker:reset
+```
+
+### Automated Setup Scripts
+
+**Unix/macOS/Linux:**
+```bash
+chmod +x scripts/dev-setup.sh
+./scripts/dev-setup.sh
+```
+
+**Windows PowerShell:**
+```powershell
+.\scripts\dev-setup.ps1
+```
+
+For detailed Docker documentation, see [DOCKER.md](DOCKER.md)
+
 ## Next Steps
 
 1. ✅ Set up monorepo structure
 2. ✅ Create shared packages (@crm/ui, @crm/shared)
 3. ✅ Configure shadcn/ui in packages/ui
-4. 🔲 Set up Prisma and PostgreSQL database
-5. 🔲 Implement Customer data model
-6. 🔲 Build backend CRUD operations (TDD)
-7. 🔲 Build frontend UI and forms
-8. 🔲 Add E2E tests with Playwright
-9. 🔲 Documentation and deployment
+4. ✅ Set up Docker for PostgreSQL
+5. 🔲 Set up Prisma ORM
+6. 🔲 Implement Customer data model
+7. 🔲 Build backend CRUD operations (TDD)
+8. 🔲 Build frontend UI and forms
+9. 🔲 Add E2E tests with Playwright
+10. 🔲 Documentation and deployment
 

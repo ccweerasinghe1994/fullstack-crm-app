@@ -23,6 +23,10 @@ out/
 .env.production.local
 .env*.local
 
+# Docker
+.docker/
+docker-compose.override.yml
+
 # Logs
 logs/
 *.log
@@ -79,3 +83,5 @@ prisma/migrations/*.sql
 *.key
 *.cert
 
+
+/generated/prisma

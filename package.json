@@ -11,7 +11,11 @@
     "test": "pnpm --filter \"@crm/*\" test",
     "test:e2e": "pnpm --filter \"@crm/*\" test:e2e",
     "lint": "pnpm --filter \"@crm/*\" lint",
-    "type-check": "pnpm --filter \"@crm/*\" type-check"
+    "type-check": "pnpm --filter \"@crm/*\" type-check",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:reset": "docker-compose down -v && docker-compose up -d"
   },
   "keywords": [],
   "author": "",

@@ -22,26 +22,71 @@ frenchCompanyInterview/
 
 - Node.js (v18 or higher)
 - pnpm (v10.11.0)
-- PostgreSQL
+- Docker & Docker Compose (for local database)
 
 ### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone <repository-url>
+cd frenchCompanyInterview
+```
+
+2. **Install dependencies**
 
 ```bash
 pnpm install
 ```
 
+3. **Set up environment variables**
+
+```bash
+cp .env.example .env
+```
+
+4. **Start Docker services** (PostgreSQL + pgAdmin)
+
+```bash
+docker-compose up -d
+```
+
+5. **Verify services are running**
+
+```bash
+docker-compose ps
+```
+
 ### Development
 
-Run all apps in development mode:
+**Start all services:**
+
 ```bash
+# 1. Start Docker services (database)
+docker-compose up -d
+
+# 2. Run migrations (once Prisma is set up)
+cd apps/api
+pnpm prisma migrate dev
+cd ../..
+
+# 3. Start development servers
 pnpm dev
 ```
 
-Run specific app:
+**Run specific app:**
+
 ```bash
-pnpm --filter web dev
-pnpm --filter api dev
+pnpm dev:api  # Backend only (http://localhost:3000)
+pnpm dev:web  # Frontend only (http://localhost:5173)
 ```
+
+**Access services:**
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3000
+- PostgreSQL: localhost:5432
+- pgAdmin: http://localhost:5050
 
 ### Building
 
