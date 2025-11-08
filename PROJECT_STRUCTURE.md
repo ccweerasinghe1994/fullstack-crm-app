@@ -206,14 +206,14 @@ pnpm test:e2e
 - Biome 2.2.4
 
 ### Backend (@crm/api)
-- Express 4.18.2
+- Express 5.1.0 (latest)
 - TypeScript 5.7.2
 - Prisma (planned)
 - PostgreSQL (planned)
 
 ### Shared Packages
 - **@crm/ui**: shadcn/ui components, Lucide icons, CVA
-- **@crm/shared**: Zod 3.22.4, TypeScript types
+- **@crm/shared**: Zod 3.24.1, TypeScript types
 
 ## Next Steps
 

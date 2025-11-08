@@ -261,7 +261,7 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 
 **Core:**
 - Node.js
-- Express 4.18.2
+- Express 5.1.0 (latest)
 - TypeScript 5.7.2
 
 **Database:**
@@ -269,8 +269,8 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 - Prisma ORM (latest)
 
 **Validation & Utilities:**
-- Zod 3.22.4
-- dotenv 16.3.1
+- Zod 3.24.1
+- dotenv 16.4.7
 - cors 2.8.5
 
 **Development Tools:**

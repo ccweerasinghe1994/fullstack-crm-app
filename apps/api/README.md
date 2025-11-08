@@ -1,6 +1,14 @@
 # CRM Backend API
 
-Express.js backend API for the CRM application.
+Express 5 backend API for the CRM application.
+
+## Tech Stack
+
+- **Express 5.1.0** - Fast, unopinionated web framework
+- **TypeScript 5.7.2** - Type-safe JavaScript
+- **Zod 3.24.1** - Schema validation
+- **Prisma** (planned) - Database ORM
+- **PostgreSQL** (planned) - Database
 
 ## Setup
 
