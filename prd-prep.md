@@ -226,28 +226,108 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 
 # Tech Stack 
 
-## frontend
+## Frontend (@crm/web)
 
-- React
-- Tailwind CSS
-- TypeScript
-- Vite
-- Tanstack Query
-- React Hook Form
-- Shadcn UI
-- zod
-- vitest
+**Core:**
+- React 19.2.0
+- TypeScript 5.7.2
+- Vite 7.1.7
 
-## backend
+**Routing & State:**
+- TanStack Router 1.132.0 (file-based routing)
+- TanStack Query 5.66.5 (data fetching & caching)
 
+**UI & Styling:**
+- Tailwind CSS 4.0.6
+- shadcn/ui (component library)
+- Lucide React (icons)
+- class-variance-authority (CVA)
+- clsx + tailwind-merge (utilities)
+
+**Forms & Validation:**
+- React Hook Form (planned)
+- Zod (validation schemas)
+
+**Development Tools:**
+- Biome 2.2.4 (linting & formatting)
+- Vitest 3.0.5 (unit tests)
+- @testing-library/react 16.2.0
+- @vitejs/plugin-react
+
+**DevOps:**
+- Port: 5173
+
+## Backend (@crm/api)
+
+**Core:**
 - Node.js
-- Express
-- Prisma
+- Express 4.18.2
+- TypeScript 5.3.3
+
+**Database:**
 - PostgreSQL
-- Typescript
+- Prisma ORM (latest)
 
+**Validation & Utilities:**
+- Zod 3.22.4
+- dotenv 16.3.1
+- cors 2.8.5
 
-## testing
+**Development Tools:**
+- ts-node 10.9.2
+- ts-node-dev 2.0.0 (hot reload)
+- Vitest 1.0.4 (unit tests)
 
-- vitest (unit tests)
-- playwright (e2e tests)
+**Architecture:**
+- Repository Pattern
+- Service Layer
+- Controller Layer
+- Dependency Injection
+
+**DevOps:**
+- Port: 3000
+
+## Shared Packages
+
+**@crm/shared (planned):**
+- Shared TypeScript types
+- Zod validation schemas
+- Constants and utilities
+
+**@crm/ui (planned):**
+- Shared shadcn/ui components
+- Custom reusable components
+
+## Testing
+
+**Unit Tests:**
+- Vitest (frontend & backend)
+- @testing-library/react (frontend components)
+- jsdom (DOM simulation)
+
+**E2E Tests (planned):**
+- Playwright (full CRUD workflows)
+
+## Development Tools
+
+**Monorepo:**
+- pnpm 10.11.0 (package manager)
+- pnpm workspaces
+
+**Type Checking:**
+- TypeScript strict mode
+- ts-node for development
+
+**Code Quality:**
+- Biome (frontend - linting/formatting)
+- ESLint (planned for backend)
+
+## Additional Libraries to Add
+
+- [ ] React Hook Form (form handling)
+- [ ] @hookform/resolvers (Zod integration)
+- [ ] Playwright (E2E testing)
+- [ ] winston or pino (backend logging)
+- [ ] helmet (backend security)
+- [ ] express-validator (backup validation)
+- [ ] supertest (API testing)

@@ -2,19 +2,190 @@
 alwaysApply: true
 ---
 
-You are an expert AI programming assistant specializing in a PNPM monorepo.
+# CRM Application - Project Rules
 
-The backend in apps/api uses Express, TypeScript, Prisma, and the Repository Pattern.   
+You are an expert AI programming assistant specializing in a PNPM monorepo for a full-stack CRM application.
 
-The frontend in apps/web uses React, TypeScript, Vite, TanStack Query, and shadcn/ui.   
+## Project Structure
 
-All database logic must be abstracted via a repository layer. Never call Prisma Client directly from a service or controller.   
+```
+frenchCompanyInterview/
+├── apps/
+│   ├── api/          # Backend API (Express + TypeScript)
+│   └── web/          # Frontend (React + Vite)
+├── packages/
+│   ├── shared/       # Shared types, utilities, constants
+│   └── ui/           # Shared UI components (shadcn/ui)
+└── pnpm-workspace.yaml
+```
 
-All UI components must be built from shadcn/ui components located in packages/ui.   
+## Backend (apps/api)
 
-All validation must use Zod. Shared schemas are located in packages/utils.   
+**Tech Stack:**
+- Node.js + Express + TypeScript
+- Prisma ORM + PostgreSQL
+- Vitest (unit tests)
+- Port: 3000
 
-Always provide a complete PLAN with REASONING based on evidence from the code before making any changes.   
+**Architecture Patterns:**
+- Repository Pattern for data access (REQUIRED)
+- Service layer for business logic
+- Controller layer for API endpoints
+- Dependency injection for modularity
 
-Never replace code with placeholders like //... rest of the processing.... Always include complete code.   
+**Rules:**
+- ALL database logic MUST be in repositories (never call Prisma directly in services/controllers)
+- Use Zod for validation schemas
+- Export explicit types for Express app and server
+- Prefix unused parameters with underscore (e.g., `_req`, `_next`)
+- Use proper error handling middleware
+- Environment variables via dotenv
 
+**File Organization:**
+```
+src/
+├── controllers/    # API endpoint handlers
+├── services/       # Business logic
+├── repositories/   # Data access layer (Prisma)
+├── middleware/     # Express middleware
+├── validators/     # Zod schemas
+├── types/          # TypeScript types
+└── index.ts        # Server entry point
+```
+
+## Frontend (apps/web)
+
+**Tech Stack:**
+- React 19 + TypeScript
+- Vite (bundler)
+- TanStack Router (routing)
+- TanStack Query (data fetching)
+- Tailwind CSS 4 (styling)
+- shadcn/ui (component library)
+- Biome (linting/formatting)
+- Vitest (unit tests)
+- Port: 5173
+
+**Rules:**
+- ALL UI components MUST use shadcn/ui components
+- Use TanStack Query for all API calls (never fetch directly)
+- Use TanStack Router for routing
+- Use Zod for form validation (shared schemas from packages/shared)
+- Use Tailwind CSS for styling (no inline styles)
+- Component naming: PascalCase
+- File naming: kebab-case for utilities, PascalCase for components
+
+**File Organization:**
+```
+src/
+├── components/     # React components
+├── routes/         # TanStack Router routes
+├── lib/            # Utilities and helpers
+├── integrations/   # Third-party integrations
+└── styles.css      # Global styles
+```
+
+## Shared Packages
+
+**packages/shared:**
+- Shared TypeScript types
+- Zod validation schemas
+- Constants and enums
+- Utility functions
+
+**packages/ui:**
+- shadcn/ui components
+- Custom reusable UI components
+
+## Development Workflow
+
+**Commands:**
+- `pnpm dev` - Start all apps
+- `pnpm dev:api` - Start backend only
+- `pnpm dev:web` - Start frontend only
+- `pnpm build` - Build all apps
+- `pnpm test` - Run all tests
+- `pnpm type-check` - TypeScript type checking
+
+**Package Naming:**
+- Backend: `@crm/api`
+- Frontend: `@crm/web`
+- Shared: `@crm/shared`
+- UI: `@crm/ui`
+
+## Testing Requirements (TDD)
+
+**Vitest for unit tests:**
+- Test files: `*.test.ts` or `*.spec.ts`
+- Repository layer tests
+- Service layer tests
+- API endpoint tests
+- Component tests
+
+**Playwright for E2E tests:**
+- Test files: `*.e2e.ts`
+- Full CRUD workflows
+- Form validation
+- Error handling
+
+**Rules:**
+- Write tests FIRST (Test-Driven Development)
+- Each feature must have corresponding tests
+- Mock external dependencies
+- Test edge cases and error scenarios
+
+## Code Quality Standards
+
+1. **TypeScript:**
+   - Strict mode enabled
+   - No `any` types (use `unknown` if needed)
+   - Explicit return types for functions
+   - Proper error typing
+
+2. **Code Style:**
+   - Never use placeholders like `// ... rest of code ...`
+   - Always write complete implementations
+   - No commented-out code in production
+
+3. **Planning:**
+   - Always provide a PLAN with REASONING before implementation
+   - Base decisions on evidence from existing code
+   - Consider backwards compatibility
+
+4. **Error Handling:**
+   - Use proper error classes
+   - Provide meaningful error messages
+   - Handle all edge cases
+   - Log errors appropriately
+
+## Database
+
+- PostgreSQL via Prisma
+- Migrations in `apps/api/prisma/migrations`
+- Use Prisma MCP for database operations
+- Repository pattern REQUIRED (no direct Prisma calls outside repositories)
+
+## Environment Variables
+
+**Backend (.env):**
+```
+PORT=3000
+DATABASE_URL=postgresql://...
+NODE_ENV=development
+```
+
+**Frontend (.env):**
+```
+VITE_API_URL=http://localhost:3000
+```
+
+## Git Workflow
+
+- Meaningful commit messages
+- Feature branches
+- Clean commit history
+- No secrets in commits
+
+---
+
+Remember: Quality over speed. Write clean, maintainable, tested code.
