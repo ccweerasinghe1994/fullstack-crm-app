@@ -2,8 +2,8 @@
  * Delete customer confirmation dialog
  */
 
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@crm/ui";
+} from "@/components/ui/dialog";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

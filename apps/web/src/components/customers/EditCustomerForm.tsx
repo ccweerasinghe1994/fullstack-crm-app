@@ -3,16 +3,16 @@
  */
 
 import { updateCustomerSchema } from "@crm/shared/validators";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-} from "@crm/ui";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { Customer, UpdateCustomerInput } from "../../types/customer";

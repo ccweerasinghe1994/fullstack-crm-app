@@ -2,21 +2,21 @@
  * Create customer dialog component
  */
 
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@crm/ui";
+} from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useCreateCustomer } from "../../hooks/useCustomers";
-import { CreateCustomerForm } from "./CreateCustomerForm";
 import type { CreateCustomerInput } from "../../types/customer";
+import { CreateCustomerForm } from "./CreateCustomerForm";
 
 export function CreateCustomerDialog() {
   const [open, setOpen] = useState(false);
@@ -32,7 +32,10 @@ export function CreateCustomerDialog() {
       },
       onError: (error) => {
         toast.error("Failed to create customer", {
-          description: error instanceof Error ? error.message : "An unexpected error occurred.",
+          description:
+            error instanceof Error
+              ? error.message
+              : "An unexpected error occurred.",
         });
       },
     });
@@ -50,7 +53,8 @@ export function CreateCustomerDialog() {
         <DialogHeader>
           <DialogTitle>Create New Customer</DialogTitle>
           <DialogDescription>
-            Add a new customer to your CRM system. Fill in the required fields below.
+            Add a new customer to your CRM system. Fill in the required fields
+            below.
           </DialogDescription>
         </DialogHeader>
         <CreateCustomerForm
@@ -61,4 +65,3 @@ export function CreateCustomerDialog() {
     </Dialog>
   );
 }
-

@@ -2,7 +2,7 @@
  * Customers list page
  */
 
-import { Alert, AlertDescription, AlertTitle } from "@crm/ui";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { createFileRoute } from "@tanstack/react-router";
 import { CreateCustomerDialog } from "../../components/customers/CreateCustomerDialog";
 import { CustomerTable } from "../../components/customers/CustomerTable";

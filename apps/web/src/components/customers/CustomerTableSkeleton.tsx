@@ -2,15 +2,15 @@
  * Skeleton loader for customer table
  */
 
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@crm/ui";
+} from "@/components/ui/table";
 
 export function CustomerTableSkeleton() {
   return (

@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@crm/ui";
+} from "@/components/ui/table";
 import type { Customer } from "../../types/customer";
 import { DeleteCustomerDialog } from "./DeleteCustomerDialog";
 import { EditCustomerDialog } from "./EditCustomerDialog";

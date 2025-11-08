@@ -2,16 +2,16 @@
  * Edit customer dialog component
  */
 
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Skeleton,
-} from "@crm/ui";
+} from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

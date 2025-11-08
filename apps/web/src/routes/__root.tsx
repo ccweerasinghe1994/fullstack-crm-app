@@ -6,7 +6,8 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import { Button, Toaster } from "@crm/ui";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
 
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
