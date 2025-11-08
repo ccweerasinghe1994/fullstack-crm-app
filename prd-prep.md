@@ -262,7 +262,7 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 **Core:**
 - Node.js
 - Express 4.18.2
-- TypeScript 5.3.3
+- TypeScript 5.7.2
 
 **Database:**
 - PostgreSQL
