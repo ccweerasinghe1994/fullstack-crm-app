@@ -68,6 +68,12 @@ Desktop.ini
 # TypeScript
 *.tsbuildinfo
 
+# Shared packages - ignore compiled output in src
+packages/*/src/**/*.js
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts.map
+
 # Prisma
 prisma/migrations/*.sql
 !prisma/migrations/migration_lock.toml

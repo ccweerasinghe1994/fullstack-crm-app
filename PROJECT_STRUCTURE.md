@@ -272,10 +272,13 @@ For detailed Docker documentation, see [DOCKER.md](DOCKER.md)
 6. ✅ Implement Customer data model
 7. ✅ Run initial migration
 8. ✅ Seed database with sample data
-9. 🔲 Create Customer Repository (TDD)
-10. 🔲 Create Customer Service (TDD)
-11. 🔲 Create Customer Controller (TDD)
-12. 🔲 Build frontend UI and forms
-13. 🔲 Add E2E tests with Playwright
-14. 🔲 Documentation and deployment
+9. ✅ Create Customer Repository (3-layer architecture)
+10. ✅ Create Customer Service (business logic)
+11. ✅ Create Customer Controller (API endpoints)
+12. ✅ Implement full CRUD operations with /api prefix
+13. ✅ Add error handling middleware
+14. 🔲 Write unit tests (TDD)
+15. 🔲 Build frontend UI and forms
+16. 🔲 Add E2E tests with Playwright
+17. 🔲 Documentation and deployment
 
