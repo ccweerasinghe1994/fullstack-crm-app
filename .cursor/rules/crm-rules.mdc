@@ -40,6 +40,7 @@ frenchCompanyInterview/
 - Prefix unused parameters with underscore (e.g., `_req`, `_next`)
 - Use proper error handling middleware
 - Environment variables via dotenv
+- **ALWAYS run `pnpm test:run` after making changes** (see Testing Requirements)
 
 **File Organization:**
 ```
@@ -164,6 +165,9 @@ import { cn } from "@crm/ui";
 - `pnpm dev:web` - Start frontend only
 - `pnpm build` - Build all apps
 - `pnpm test` - Run all tests
+- `pnpm test:run` - Run tests once (use after API changes)
+- `pnpm test:watch` - Run tests in watch mode
+- `pnpm test:coverage` - Run tests with coverage report
 - `pnpm type-check` - TypeScript type checking
 
 **Package Naming:**
@@ -192,6 +196,33 @@ import { cn } from "@crm/ui";
 - Each feature must have corresponding tests
 - Mock external dependencies
 - Test edge cases and error scenarios
+
+**Critical Testing Workflow for API Changes:**
+
+⚠️ **MANDATORY: After ANY change to `apps/api`, you MUST run tests before considering the task complete:**
+
+```bash
+cd apps/api
+pnpm test:run
+```
+
+If tests fail:
+1. Fix the failing tests or code
+2. Run tests again until all pass
+3. Only then consider the task complete
+
+This applies to:
+- Adding new API endpoints
+- Modifying existing endpoints
+- Changing business logic in services
+- Updating data access in repositories
+- Modifying middleware or error handlers
+- Changing types or schemas
+
+**Current Test Status:**
+- ✅ 26/26 tests passing
+- ✅ 96.96% code coverage
+- Expected execution time: ~300-400ms
 
 ## Code Quality Standards
 

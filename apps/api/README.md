@@ -104,6 +104,34 @@ NODE_ENV=development
 DATABASE_URL=postgresql://user:password@localhost:5432/crm_db
 ```
 
+## Testing
+
+This project uses **Vitest** for testing with **96.96% code coverage**.
+
+**Test Commands:**
+
+```bash
+# Run tests once
+pnpm test:run
+
+# Watch mode (auto-rerun on changes)
+pnpm test:watch
+
+# With coverage report
+pnpm test:coverage
+
+# Interactive UI
+pnpm test:ui
+```
+
+**Test Results:**
+- ✅ **26 tests passing**
+- ✅ **96.96% code coverage**
+- Repository Layer: 100% coverage
+- Service Layer: 100% coverage
+
+See [TESTING.md](./TESTING.md) for detailed testing guide.
+
 ## API Endpoints
 
 - `GET /health` - Health check endpoint
