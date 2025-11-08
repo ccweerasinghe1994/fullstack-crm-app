@@ -9,14 +9,51 @@ Express 5 backend API for the CRM application.
 - **Zod 4.1.12** - Schema validation (latest)
 - **dotenv 17.2.3** - Environment variables
 - **Vitest 4.0.8** - Unit testing
-- **Prisma** (planned) - Database ORM
-- **PostgreSQL** (planned) - Database
+- **Prisma 6.19.0** - Database ORM
+- **PostgreSQL 18** - Database (via Docker)
 
 ## Setup
 
-Install dependencies:
+### 1. Install dependencies
+
 ```bash
 pnpm install
+```
+
+### 2. Set up environment variables
+
+Create `.env` file in `apps/api/`:
+
+```env
+DATABASE_URL=postgresql://crm_user:crm_password@localhost:5432/crm_db
+PORT=3000
+NODE_ENV=development
+```
+
+### 3. Start Docker database
+
+```bash
+# From project root
+pnpm docker:up
+```
+
+### 4. Generate Prisma Client
+
+```bash
+pnpm prisma:generate
+```
+
+### 5. Run database migrations
+
+```bash
+pnpm prisma:migrate
+# When prompted, enter migration name: "init_customer_model"
+```
+
+### 6. (Optional) Seed database
+
+```bash
+pnpm prisma:seed
 ```
 
 ## Development
@@ -25,6 +62,24 @@ Run in development mode:
 ```bash
 pnpm dev
 ```
+
+### Prisma Commands
+
+```bash
+# Generate Prisma Client
+pnpm prisma:generate
+
+# Create and apply migration
+pnpm prisma:migrate
+
+# Open Prisma Studio (GUI)
+pnpm prisma:studio
+
+# Seed database
+pnpm prisma:seed
+```
+
+See [PRISMA_SETUP.md](./PRISMA_SETUP.md) for detailed Prisma documentation.
 
 ## Build
 
