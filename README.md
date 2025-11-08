@@ -65,10 +65,51 @@ pnpm test:e2e
 ## Workspace Packages
 
 ### Apps
-- `apps/web` - React frontend application
-- `apps/api` - Express backend API
+- **`@crm/web`** (`apps/web`) - React frontend application (Port 5173)
+- **`@crm/api`** (`apps/api`) - Express backend API (Port 3000)
 
 ### Packages
-- `packages/shared` - Shared types, utilities, and constants
-- Additional packages will be added as needed
+- **`@crm/shared`** (`packages/shared`) - Shared types, Zod validators, constants
+- **`@crm/ui`** (`packages/ui`) - Shared shadcn/ui components and utilities
+
+## Package Dependencies
+
+```
+@crm/web (frontend)
+├── @crm/shared (validators, types, constants)
+└── @crm/ui (UI components)
+
+@crm/api (backend)
+└── @crm/shared (validators, types, constants)
+
+@crm/ui (UI package)
+└── (standalone, used by web app)
+
+@crm/shared (shared utilities)
+└── (standalone, used by web and api)
+```
+
+## Adding shadcn/ui Components
+
+Components are located in the shared `packages/ui` package:
+
+```bash
+# From packages/ui directory
+cd packages/ui
+pnpx shadcn@latest add button card input form dialog table
+
+# Or from project root
+pnpx shadcn@latest add button --cwd packages/ui
+```
+
+Components will be added to `packages/ui/src/components/ui/`
+
+### Using Shared Components
+
+```tsx
+// In apps/web or any other app
+import { Button } from "@crm/ui";
+import { customerSchema } from "@crm/shared/validators";
+import { API_ENDPOINTS } from "@crm/shared/constants";
+```
 

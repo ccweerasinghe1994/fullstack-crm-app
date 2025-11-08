@@ -1,0 +1,20 @@
+# Backend API Rules
+
+This is part of a pnpm monorepo. See main project rules at `.cursor/rules/crm-rules.mdc`
+
+## Key Requirements
+
+- **Repository Pattern**: ALL database operations MUST go through repositories
+- **Never call Prisma directly** from services or controllers
+- **Zod validation**: Use for all API request/response validation
+- **Error handling**: Prefix unused params with underscore (e.g., `_req`, `_next`)
+- **Testing**: Write tests FIRST (TDD approach)
+
+## Architecture Layers
+
+1. **Controllers** - Handle HTTP requests/responses
+2. **Services** - Business logic
+3. **Repositories** - Data access (Prisma)
+4. **Validators** - Zod schemas
+5. **Middleware** - Express middleware
+

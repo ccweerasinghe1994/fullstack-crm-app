@@ -79,23 +79,82 @@ src/
 ```
 src/
 ├── components/     # React components
+│   └── ui/        # shadcn/ui components
 ├── routes/         # TanStack Router routes
 ├── lib/            # Utilities and helpers
 ├── integrations/   # Third-party integrations
 └── styles.css      # Global styles
 ```
 
+**shadcn/ui Components (PNPM Workspace):**
+
+Since this is a pnpm monorepo, shadcn components are located in the shared `packages/ui` package for reusability across apps:
+
+```bash
+# Navigate to the UI package
+cd packages/ui
+
+# Add shadcn components
+pnpx shadcn@latest add button
+pnpx shadcn@latest add card
+pnpx shadcn@latest add input
+pnpx shadcn@latest add form
+pnpx shadcn@latest add dialog
+pnpx shadcn@latest add table
+pnpx shadcn@latest add sheet
+pnpx shadcn@latest add select
+# ... etc
+```
+
+OR run from root with working directory flag:
+
+```bash
+# From project root
+pnpx shadcn@latest add button --cwd packages/ui
+```
+
+Components will be added to `packages/ui/src/components/ui/`
+
+**Usage in Apps:**
+
+```tsx
+// Import from shared UI package
+import { Button } from "@crm/ui";
+import { Card } from "@crm/ui/components/ui/card";
+```
+
+**shadcn Configuration:**
+- Style: `new-york`
+- Base color: `zinc`
+- CSS variables: `enabled`
+- Icon library: `lucide-react`
+- Config location: `packages/ui/components.json`
+
 ## Shared Packages
 
-**packages/shared:**
-- Shared TypeScript types
-- Zod validation schemas
-- Constants and enums
+**packages/shared (`@crm/shared`):**
+- Shared TypeScript types and interfaces
+- Zod validation schemas (e.g., customer validation)
+- Constants and enums (e.g., API endpoints)
 - Utility functions
 
-**packages/ui:**
-- shadcn/ui components
+**Usage:**
+```typescript
+import { customerSchema } from "@crm/shared/validators";
+import { API_ENDPOINTS } from "@crm/shared/constants";
+import type { Customer } from "@crm/shared/types";
+```
+
+**packages/ui (`@crm/ui`):**
+- shadcn/ui components (located in `src/components/ui/`)
 - Custom reusable UI components
+- Shared utilities (e.g., `cn` helper)
+
+**Usage:**
+```tsx
+import { Button } from "@crm/ui";
+import { cn } from "@crm/ui";
+```
 
 ## Development Workflow
 
