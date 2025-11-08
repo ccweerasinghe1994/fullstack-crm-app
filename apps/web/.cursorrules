@@ -1,0 +1,26 @@
+# Frontend App Rules
+
+This is part of a pnpm monorepo. See main project rules at `.cursor/rules/crm-rules.mdc`
+
+## shadcn/ui Components
+
+Components are located in the shared `packages/ui` package:
+
+```bash
+# From packages/ui directory
+cd packages/ui
+pnpx shadcn@latest add button
+
+# Or from project root
+pnpx shadcn@latest add button --cwd packages/ui
+```
+
+## Usage
+
+Import components from the shared UI package:
+
+```tsx
+import { Button } from "@crm/ui";
+import { Card } from "@crm/ui/components/ui/card";
+```
+

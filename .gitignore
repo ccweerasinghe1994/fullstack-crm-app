@@ -23,6 +23,10 @@ out/
 .env.production.local
 .env*.local
 
+# Docker
+.docker/
+docker-compose.override.yml
+
 # Logs
 logs/
 *.log
@@ -40,6 +44,7 @@ coverage/
 playwright-report/
 test-results/
 playwright/.cache/
+.vitest-cache/
 
 # IDE and editors
 .vscode/
@@ -64,9 +69,19 @@ Desktop.ini
 # TypeScript
 *.tsbuildinfo
 
+# Shared packages - ignore compiled output in src
+packages/*/src/**/*.js
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts.map
+
 # Prisma
 prisma/migrations/*.sql
 !prisma/migrations/migration_lock.toml
+
+# TSOA generated files
+apps/api/src/generated/routes.ts
+apps/api/src/generated/swagger.json
 
 # Temporary files
 *.tmp
@@ -79,3 +94,5 @@ prisma/migrations/*.sql
 *.key
 *.cert
 
+
+/generated/prisma
