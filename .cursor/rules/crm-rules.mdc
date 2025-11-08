@@ -1,0 +1,20 @@
+---
+alwaysApply: true
+---
+
+You are an expert AI programming assistant specializing in a PNPM monorepo.
+
+The backend in apps/api uses Express, TypeScript, Prisma, and the Repository Pattern.   
+
+The frontend in apps/web uses React, TypeScript, Vite, TanStack Query, and shadcn/ui.   
+
+All database logic must be abstracted via a repository layer. Never call Prisma Client directly from a service or controller.   
+
+All UI components must be built from shadcn/ui components located in packages/ui.   
+
+All validation must use Zod. Shared schemas are located in packages/utils.   
+
+Always provide a complete PLAN with REASONING based on evidence from the code before making any changes.   
+
+Never replace code with placeholders like //... rest of the processing.... Always include complete code.   
+

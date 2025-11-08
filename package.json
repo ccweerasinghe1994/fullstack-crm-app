@@ -1,0 +1,18 @@
+{
+  "name": "frenchCompanyInterview",
+  "version": "1.0.0",
+  "description": "Full-Stack CRM Application - Monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter './apps/*' dev",
+    "build": "pnpm --filter './apps/*' build",
+    "test": "pnpm --filter './apps/*' test",
+    "test:e2e": "pnpm --filter './apps/*' test:e2e",
+    "lint": "pnpm --filter './apps/*' lint",
+    "type-check": "pnpm --filter './apps/*' type-check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0"
+}
