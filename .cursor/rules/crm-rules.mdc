@@ -12,10 +12,9 @@ You are an expert AI programming assistant specializing in a PNPM monorepo for a
 frenchCompanyInterview/
 ├── apps/
 │   ├── api/          # Backend API (Express + TypeScript)
-│   └── web/          # Frontend (React + Vite)
+│   └── web/          # Frontend (React + Vite + shadcn/ui)
 ├── packages/
-│   ├── shared/       # Shared types, utilities, constants
-│   └── ui/           # Shared UI components (shadcn/ui)
+│   └── shared/       # Shared types, utilities, constants
 └── pnpm-workspace.yaml
 ```
 
@@ -87,13 +86,13 @@ src/
 └── styles.css      # Global styles
 ```
 
-**shadcn/ui Components (PNPM Workspace):**
+**shadcn/ui Components:**
 
-Since this is a pnpm monorepo, shadcn components are located in the shared `packages/ui` package for reusability across apps:
+shadcn components are located in `apps/web/src/components/ui/`:
 
 ```bash
-# Navigate to the UI package
-cd packages/ui
+# Navigate to the web app
+cd apps/web
 
 # Add shadcn components
 pnpx shadcn@latest add button
@@ -111,17 +110,18 @@ OR run from root with working directory flag:
 
 ```bash
 # From project root
-pnpx shadcn@latest add button --cwd packages/ui
+pnpx shadcn@latest add button --cwd apps/web
 ```
 
-Components will be added to `packages/ui/src/components/ui/`
+Components will be added to `apps/web/src/components/ui/`
 
 **Usage in Apps:**
 
 ```tsx
-// Import from shared UI package
-import { Button } from "@crm/ui";
-import { Card } from "@crm/ui/components/ui/card";
+// Import from local UI components
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 ```
 
 **shadcn Configuration:**
@@ -129,7 +129,7 @@ import { Card } from "@crm/ui/components/ui/card";
 - Base color: `zinc`
 - CSS variables: `enabled`
 - Icon library: `lucide-react`
-- Config location: `packages/ui/components.json`
+- Config location: `apps/web/components.json`
 
 ## Shared Packages
 
@@ -146,16 +146,6 @@ import { API_ENDPOINTS } from "@crm/shared/constants";
 import type { Customer } from "@crm/shared/types";
 ```
 
-**packages/ui (`@crm/ui`):**
-- shadcn/ui components (located in `src/components/ui/`)
-- Custom reusable UI components
-- Shared utilities (e.g., `cn` helper)
-
-**Usage:**
-```tsx
-import { Button } from "@crm/ui";
-import { cn } from "@crm/ui";
-```
 
 ## Documentation Structure
 
@@ -289,7 +279,6 @@ apps/api/docs/docker.md                      ❌ (project-wide, should be in roo
 - Backend: `@crm/api`
 - Frontend: `@crm/web`
 - Shared: `@crm/shared`
-- UI: `@crm/ui`
 
 ## Testing Requirements (TDD)
 
