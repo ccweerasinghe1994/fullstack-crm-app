@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, Response, RequestHandler } from "express";
 import morgan from "morgan";
 import { stream } from "../config/logger";
 
@@ -34,11 +34,11 @@ const skipHealthChecks = (req: Request, _res: Response) => {
   return req.url === "/health" || req.url === "/api/health";
 };
 
-// Create Morgan middleware
-export const httpLogger = morgan(format, {
+// Create Morgan middleware with explicit type annotation
+export const httpLogger: RequestHandler = morgan(format, {
   stream,
   skip: skipHealthChecks,
-});
+}) as RequestHandler;
 
 export default httpLogger;
 

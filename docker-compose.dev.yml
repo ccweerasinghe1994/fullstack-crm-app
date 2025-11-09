@@ -1,0 +1,60 @@
+# Docker Compose Development Override
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # API Development Overrides
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: builder  # Use builder stage for development
+    command: sh -c "cd /app/apps/api && pnpm prisma:generate && pnpm prisma:migrate:deploy && pnpm dev"
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: debug
+      # Enable debugging
+      NODE_OPTIONS: --inspect=0.0.0.0:9229
+    ports:
+      - '3000:3000'
+      - '9229:9229'  # Node.js debugger port
+    volumes:
+      # Mount source code for hot reload
+      - ./apps/api/src:/app/apps/api/src:ro
+      - ./apps/api/prisma:/app/apps/api/prisma:ro
+      - ./apps/api/tsconfig.json:/app/apps/api/tsconfig.json:ro
+      - ./packages/shared:/app/packages/shared:ro
+      # Preserve node_modules in container
+      - /app/node_modules
+      - /app/apps/api/node_modules
+      - /app/packages/shared/node_modules
+
+  # Web Development Overrides
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: builder  # Use builder stage for development
+    command: sh -c "cd /app/apps/web && pnpm dev --host 0.0.0.0"
+    environment:
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - '5173:5173'
+    volumes:
+      # Mount source code for hot reload
+      - ./apps/web/src:/app/apps/web/src:ro
+      - ./apps/web/public:/app/apps/web/public:ro
+      - ./apps/web/index.html:/app/apps/web/index.html:ro
+      - ./apps/web/vite.config.ts:/app/apps/web/vite.config.ts:ro
+      - ./apps/web/tailwind.config.ts:/app/apps/web/tailwind.config.ts:ro
+      - ./apps/web/tsconfig.json:/app/apps/web/tsconfig.json:ro
+      - ./apps/web/tsconfig.app.json:/app/apps/web/tsconfig.app.json:ro
+      - ./apps/web/tsconfig.node.json:/app/apps/web/tsconfig.node.json:ro
+      - ./apps/web/components.json:/app/apps/web/components.json:ro
+      - ./packages/shared:/app/packages/shared:ro
+      # Preserve node_modules in container
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/packages/shared/node_modules
+    depends_on:
+      - api
+

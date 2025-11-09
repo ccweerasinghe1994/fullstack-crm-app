@@ -49,7 +49,6 @@ export function DataTable<TData, TValue>({
   meta,
   pagination,
   onPaginationChange,
-  searchKey = "email",
   searchPlaceholder = "Search customers...",
 }: DataTableProps<TData, TValue>) {
   const [searchValue, setSearchValue] = React.useState(pagination?.search || "");
