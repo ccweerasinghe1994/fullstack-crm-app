@@ -42,9 +42,93 @@ export class CustomerRepository implements ICustomerRepository {
 
     const skip = (page - 1) * limit;
 
-    // If search is provided, use full-text search with raw SQL
+    // If search is provided, use appropriate search strategy
     if (search) {
-      // Get total count with search filter
+      const searchTerm = search.trim();
+
+      // For very short searches (1-2 chars), use ILIKE for prefix matching
+      // Full-text search doesn't work well with single characters
+      if (searchTerm.length <= 2) {
+        const likePattern = `${searchTerm}%`;
+
+        // Get total count with ILIKE search
+        const totalResult = await this.prisma.$queryRawUnsafe<
+          [{ count: bigint }]
+        >(
+          `SELECT COUNT(*) as count FROM customers 
+           WHERE first_name ILIKE $1 
+              OR last_name ILIKE $1 
+              OR email ILIKE $1`,
+          likePattern
+        );
+        const total = Number(totalResult[0].count);
+
+        // Map sortBy to actual column names
+        const columnMap: Record<string, string> = {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+          firstName: "first_name",
+          lastName: "last_name",
+          phoneNumber: "phone_number",
+        };
+        const dbColumnName = columnMap[sortBy] || sortBy;
+
+        // Fetch paginated data with ILIKE search
+        const rawData = await this.prisma.$queryRawUnsafe<any[]>(
+          `SELECT 
+            id,
+            first_name as "firstName",
+            last_name as "lastName",
+            email,
+            phone_number as "phoneNumber",
+            address,
+            city,
+            state,
+            country,
+            created_at as "createdAt",
+            updated_at as "updatedAt"
+           FROM customers 
+           WHERE first_name ILIKE $1 
+              OR last_name ILIKE $1 
+              OR email ILIKE $1
+           ORDER BY ${dbColumnName} ${order}
+           LIMIT $2 OFFSET $3`,
+          likePattern,
+          limit,
+          skip
+        );
+
+        // Map raw data to Customer type
+        const data: Customer[] = rawData.map((row) => ({
+          id: row.id,
+          firstName: row.firstName,
+          lastName: row.lastName,
+          email: row.email,
+          phoneNumber: row.phoneNumber,
+          address: row.address,
+          city: row.city,
+          state: row.state,
+          country: row.country,
+          createdAt: row.createdAt,
+          updatedAt: row.updatedAt,
+        }));
+
+        const totalPages = Math.ceil(total / limit);
+
+        return {
+          data,
+          meta: {
+            page,
+            limit,
+            total,
+            totalPages,
+            hasNextPage: page < totalPages,
+            hasPreviousPage: page > 1,
+          },
+        };
+      }
+
+      // For longer searches (3+ chars), use full-text search
       const totalResult = await this.prisma.$queryRawUnsafe<
         [{ count: bigint }]
       >(
