@@ -6,12 +6,12 @@ All Docker containers have been successfully built and deployed.
 
 ### Container Status
 
-| Service | Status | Port | Health |
-|---------|--------|------|--------|
-| **API** | ✅ Running | 3000 | Healthy |
-| **Web** | ✅ Running | 5173 | Running |
-| **PostgreSQL** | ✅ Running | 5432 | Healthy |
-| **pgAdmin** | ⚠️ Restarting | 5050 | - |
+| Service        | Status       | Port | Health  |
+| -------------- | ------------ | ---- | ------- |
+| **API**        | ✅ Running    | 3000 | Healthy |
+| **Web**        | ✅ Running    | 5173 | Running |
+| **PostgreSQL** | ✅ Running    | 5432 | Healthy |
+| **pgAdmin**    | ⚠️ Restarting | 5050 | -       |
 
 ### Verified Working
 
