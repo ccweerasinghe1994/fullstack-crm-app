@@ -10,8 +10,7 @@ frenchCompanyInterview/
 │   ├── web/          # React frontend application
 │   └── api/          # Node.js/Express backend application
 ├── packages/          # Shared packages and libraries
-│   ├── shared/       # Shared types, utilities, constants
-│   └── ui/           # Shared UI components (if needed)
+│   └── shared/       # Shared types, utilities, constants
 ├── pnpm-workspace.yaml
 └── package.json
 ```
@@ -121,20 +120,15 @@ pnpm test:e2e
 
 ### Packages
 - **`@crm/shared`** (`packages/shared`) - Shared types, Zod validators, constants
-- **`@crm/ui`** (`packages/ui`) - Shared shadcn/ui components and utilities
 
 ## Package Dependencies
 
 ```
 @crm/web (frontend)
-├── @crm/shared (validators, types, constants)
-└── @crm/ui (UI components)
+└── @crm/shared (validators, types, constants)
 
 @crm/api (backend)
 └── @crm/shared (validators, types, constants)
-
-@crm/ui (UI package)
-└── (standalone, used by web app)
 
 @crm/shared (shared utilities)
 └── (standalone, used by web and api)
@@ -142,24 +136,21 @@ pnpm test:e2e
 
 ## Adding shadcn/ui Components
 
-Components are located in the shared `packages/ui` package:
+Components are located in `apps/web/src/components/ui/`:
 
 ```bash
-# From packages/ui directory
-cd packages/ui
+# From apps/web directory
+cd apps/web
 pnpx shadcn@latest add button card input form dialog table
-
-# Or from project root
-pnpx shadcn@latest add button --cwd packages/ui
 ```
 
-Components will be added to `packages/ui/src/components/ui/`
+Components will be added to `apps/web/src/components/ui/`
 
-### Using Shared Components
+### Using Components and Shared Code
 
 ```tsx
-// In apps/web or any other app
-import { Button } from "@crm/ui";
+// In apps/web
+import { Button } from "@/components/ui/button";
 import { customerSchema } from "@crm/shared/validators";
 import { API_ENDPOINTS } from "@crm/shared/constants";
 ```

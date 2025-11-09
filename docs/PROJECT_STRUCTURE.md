@@ -27,27 +27,15 @@ frenchCompanyInterview/
 │       └── .cursorrules           # Frontend-specific rules
 │
 ├── packages/                       # Shared packages
-│   ├── shared/                     # Shared utilities (@crm/shared)
-│   │   ├── src/
-│   │   │   ├── types/             # TypeScript types
-│   │   │   ├── validators/        # Zod schemas
-│   │   │   │   └── customer.validator.ts
-│   │   │   ├── constants/         # Constants and enums
-│   │   │   └── index.ts           # Main exports
-│   │   ├── package.json
-│   │   ├── tsconfig.json
-│   │   └── README.md
-│   │
-│   └── ui/                         # Shared UI components (@crm/ui)
+│   └── shared/                     # Shared utilities (@crm/shared)
 │       ├── src/
-│       │   ├── components/
-│       │   │   └── ui/            # shadcn/ui components go here
-│       │   ├── lib/
-│       │   │   └── utils.ts       # cn() utility
-│       │   └── index.ts           # Component exports
+│       │   ├── types/             # TypeScript types
+│       │   ├── validators/        # Zod schemas
+│       │   │   └── customer.validator.ts
+│       │   ├── constants/         # Constants and enums
+│       │   └── index.ts           # Main exports
 │       ├── package.json
 │       ├── tsconfig.json
-│       ├── components.json        # shadcn/ui configuration
 │       └── README.md
 │
 ├── .cursor/
@@ -75,20 +63,14 @@ frenchCompanyInterview/
 ### @crm/web (Frontend)
 - **Depends on:**
   - `@crm/shared` - For types, validators, constants
-  - `@crm/ui` - For shared UI components
 - **Port:** 5173
-- **Tech:** React 19, Vite, TanStack Router, TanStack Query, Tailwind CSS 4
+- **Tech:** React 19, Vite, TanStack Router, TanStack Query, Tailwind CSS 4, shadcn/ui
 
 ### @crm/api (Backend)
 - **Depends on:**
   - `@crm/shared` - For types, validators, constants
 - **Port:** 3000
 - **Tech:** Express, TypeScript, Prisma (planned), PostgreSQL
-
-### @crm/ui (Shared UI)
-- **Dependencies:** None (standalone)
-- **Provides:** shadcn/ui components, utilities
-- **Used by:** @crm/web (and potentially other apps)
 
 ### @crm/shared (Shared Utilities)
 - **Dependencies:** Zod
@@ -97,45 +79,44 @@ frenchCompanyInterview/
 
 ## Adding shadcn/ui Components
 
-All shadcn/ui components are centralized in `packages/ui`:
+All shadcn/ui components are in `apps/web/src/components/ui/`:
 
 ```bash
-# Option 1: From packages/ui directory
-cd packages/ui
+# From apps/web directory
+cd apps/web
 pnpx shadcn@latest add button card input form dialog table
 
-# Option 2: From project root
-pnpx shadcn@latest add button --cwd packages/ui
-pnpx shadcn@latest add card --cwd packages/ui
+# Or from project root
+pnpx shadcn@latest add button --cwd apps/web
 ```
 
 ### Available Component Commands
 
 ```bash
 # Common components
-pnpx shadcn@latest add button --cwd packages/ui
-pnpx shadcn@latest add card --cwd packages/ui
-pnpx shadcn@latest add input --cwd packages/ui
-pnpx shadcn@latest add form --cwd packages/ui
-pnpx shadcn@latest add dialog --cwd packages/ui
-pnpx shadcn@latest add table --cwd packages/ui
-pnpx shadcn@latest add sheet --cwd packages/ui
-pnpx shadcn@latest add select --cwd packages/ui
-pnpx shadcn@latest add dropdown-menu --cwd packages/ui
-pnpx shadcn@latest add toast --cwd packages/ui
-pnpx shadcn@latest add alert --cwd packages/ui
-pnpx shadcn@latest add badge --cwd packages/ui
+pnpx shadcn@latest add button --cwd apps/web
+pnpx shadcn@latest add card --cwd apps/web
+pnpx shadcn@latest add input --cwd apps/web
+pnpx shadcn@latest add form --cwd apps/web
+pnpx shadcn@latest add dialog --cwd apps/web
+pnpx shadcn@latest add table --cwd apps/web
+pnpx shadcn@latest add sheet --cwd apps/web
+pnpx shadcn@latest add select --cwd apps/web
+pnpx shadcn@latest add dropdown-menu --cwd apps/web
+pnpx shadcn@latest add toast --cwd apps/web
+pnpx shadcn@latest add alert --cwd apps/web
+pnpx shadcn@latest add badge --cwd apps/web
 ```
 
 ## Usage Examples
 
-### Importing Shared Components
+### Importing Components
 
 ```tsx
 // In apps/web/src/components/MyComponent.tsx
-import { Button } from "@crm/ui";
-import { Card } from "@crm/ui/components/ui/card";
-import { cn } from "@crm/ui";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export function MyComponent() {
   return (
@@ -220,7 +201,6 @@ pnpm test:e2e
 - PostgreSQL (planned)
 
 ### Shared Packages
-- **@crm/ui**: shadcn/ui components, Lucide icons, CVA
 - **@crm/shared**: Zod 4.1.12 (latest), TypeScript types
 
 ## Docker Services
@@ -265,8 +245,8 @@ For detailed Docker documentation, see [DOCKER.md](DOCKER.md)
 ## Next Steps
 
 1. ✅ Set up monorepo structure
-2. ✅ Create shared packages (@crm/ui, @crm/shared)
-3. ✅ Configure shadcn/ui in packages/ui
+2. ✅ Create shared packages (@crm/shared)
+3. ✅ Configure shadcn/ui in apps/web
 4. ✅ Set up Docker for PostgreSQL
 5. ✅ Set up Prisma ORM
 6. ✅ Implement Customer data model

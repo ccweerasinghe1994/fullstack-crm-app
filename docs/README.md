@@ -31,7 +31,6 @@ This includes:
 
 ### Shared Packages
 - [Shared Package README](../packages/shared/README.md)
-- [UI Package README](../packages/ui/README.md)
 
 ## 🚀 Quick Links
 

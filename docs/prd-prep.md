@@ -292,14 +292,10 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 
 ## Shared Packages
 
-**@crm/shared (planned):**
+**@crm/shared:**
 - Shared TypeScript types
 - Zod validation schemas
 - Constants and utilities
-
-**@crm/ui (planned):**
-- Shared shadcn/ui components
-- Custom reusable components
 
 ## Testing
 
