@@ -321,12 +321,13 @@ This test should take **2-4 hours** to complete. We value quality over speed, bu
 - Biome (frontend - linting/formatting)
 - ESLint (planned for backend)
 
-## Additional Libraries to Add
+## Additional Libraries Status
 
-- [ ] React Hook Form (form handling)
-- [ ] @hookform/resolvers (Zod integration)
-- [ ] Playwright (E2E testing)
-- [ ] winston or pino (backend logging)
-- [ ] helmet (backend security)
-- [ ] express-validator (backup validation)
-- [ ] supertest (API testing)
+- ✅ React Hook Form (form handling) - ADDED
+- ✅ @hookform/resolvers (Zod integration) - ADDED
+- ✅ Playwright (E2E testing) - ADDED & CONFIGURED
+- ✅ Winston (backend logging) - ADDED & CONFIGURED
+- ✅ tsx (TypeScript runtime for Docker) - ADDED
+- [ ] helmet (backend security) - OPTIONAL
+- [ ] express-validator (backup validation) - NOT NEEDED (using Zod + TSOA)
+- [ ] supertest (API testing) - NOT NEEDED (using Vitest)

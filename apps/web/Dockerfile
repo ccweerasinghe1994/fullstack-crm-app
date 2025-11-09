@@ -38,25 +38,13 @@ COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
 # Copy built assets from builder stage
 COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
 
-# Create non-root user for nginx
-RUN addgroup -g 1001 -S nginx-user && \
-    adduser -S nginx-user -u 1001 && \
-    chown -R nginx-user:nginx-user /usr/share/nginx/html && \
-    chown -R nginx-user:nginx-user /var/cache/nginx && \
-    chown -R nginx-user:nginx-user /var/log/nginx && \
-    touch /var/run/nginx.pid && \
-    chown -R nginx-user:nginx-user /var/run/nginx.pid
-
-# Switch to non-root user
-USER nginx-user
-
 # Expose port 80
 EXPOSE 80
 
-# Health check
+# Health check (run as root before switching user)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
 
-# Start nginx
+# Start nginx (nginx handles user switching internally)
 CMD ["nginx", "-g", "daemon off;"]
 
