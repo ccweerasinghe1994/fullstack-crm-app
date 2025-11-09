@@ -54,6 +54,7 @@ export function useCustomersPaginated(params: PaginationParams) {
       );
       return response;
     },
+    placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
 }
 

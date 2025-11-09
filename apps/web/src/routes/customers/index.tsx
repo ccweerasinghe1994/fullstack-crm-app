@@ -27,7 +27,8 @@ function CustomersPage() {
     order: "desc",
   });
 
-  const { data, isLoading, error } = useCustomersPaginated(pagination);
+  const { data, isLoading, isFetching, error } =
+    useCustomersPaginated(pagination);
 
   const columns = createColumns({
     onEdit: (customer) => setEditingCustomer(customer),
@@ -61,15 +62,27 @@ function CustomersPage() {
         ) : isLoading ? (
           <CustomerTableSkeleton />
         ) : data ? (
-          <DataTable
-            columns={columns}
-            data={data.data}
-            meta={data.meta}
-            pagination={pagination}
-            onPaginationChange={setPagination}
-            searchKey="email"
-            searchPlaceholder="Search by email..."
-          />
+          <div className="relative">
+            {isFetching && (
+              <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-10 rounded-lg">
+                <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-md border shadow-sm">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  <span className="text-sm text-muted-foreground">
+                    Loading...
+                  </span>
+                </div>
+              </div>
+            )}
+            <DataTable
+              columns={columns}
+              data={data.data}
+              meta={data.meta}
+              pagination={pagination}
+              onPaginationChange={setPagination}
+              searchKey="email"
+              searchPlaceholder="Search by email..."
+            />
+          </div>
         ) : null}
       </div>
 
