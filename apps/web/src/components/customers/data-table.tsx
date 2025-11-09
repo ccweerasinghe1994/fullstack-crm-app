@@ -4,13 +4,11 @@
 
 import type {
   ColumnDef,
-  ColumnFiltersState,
   VisibilityState,
 } from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -42,7 +40,6 @@ interface DataTableProps<TData, TValue> {
   meta?: PaginationMeta;
   pagination?: PaginationParams;
   onPaginationChange?: (pagination: PaginationParams) => void;
-  searchKey?: string;
   searchPlaceholder?: string;
 }
 
@@ -53,17 +50,30 @@ export function DataTable<TData, TValue>({
   pagination,
   onPaginationChange,
   searchKey = "email",
-  searchPlaceholder = "Filter emails...",
+  searchPlaceholder = "Search customers...",
 }: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [searchValue, setSearchValue] = React.useState(pagination?.search || "");
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   // Use server-side pagination if meta is provided
   const isServerSide = !!meta && !!pagination && !!onPaginationChange;
+
+  // Debounce search input (500ms delay)
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (onPaginationChange && pagination) {
+        onPaginationChange({
+          ...pagination,
+          search: searchValue,
+          page: 1, // Reset to page 1 on new search
+        });
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
   // Handle sorting changes for server-side
   const handleSortingChange = React.useCallback(
@@ -113,7 +123,6 @@ export function DataTable<TData, TValue>({
     manualPagination: isServerSide,
     manualSorting: isServerSide,
     pageCount: meta?.totalPages ?? -1,
-    onColumnFiltersChange: setColumnFilters,
     onSortingChange: isServerSide ? handleSortingChange : undefined,
     getCoreRowModel: getCoreRowModel(),
     ...(isServerSide
@@ -121,12 +130,10 @@ export function DataTable<TData, TValue>({
       : {
           getPaginationRowModel: getPaginationRowModel(),
           getSortedRowModel: getSortedRowModel(),
-          getFilteredRowModel: getFilteredRowModel(),
         }),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      columnFilters,
       columnVisibility,
       rowSelection,
       sorting: sortingState,
@@ -144,10 +151,8 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-between">
         <Input
           placeholder={searchPlaceholder}
-          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(searchKey)?.setFilterValue(event.target.value)
-          }
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
           className="max-w-sm"
         />
         <DropdownMenu>

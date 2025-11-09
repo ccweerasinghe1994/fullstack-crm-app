@@ -25,6 +25,7 @@ function CustomersPage() {
     limit: 10,
     sortBy: "createdAt",
     order: "desc",
+    search: "",
   });
 
   const { data, isLoading, isFetching, error } =
@@ -79,8 +80,7 @@ function CustomersPage() {
               meta={data.meta}
               pagination={pagination}
               onPaginationChange={setPagination}
-              searchKey="email"
-              searchPlaceholder="Search by email..."
+              searchPlaceholder="Search customers..."
             />
           </div>
         ) : null}

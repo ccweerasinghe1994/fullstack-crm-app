@@ -7,6 +7,7 @@ export interface PaginationParams {
   limit?: number;
   sortBy?: string;
   order?: "asc" | "desc";
+  search?: string;
 }
 
 export interface PaginationMeta {

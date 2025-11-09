@@ -86,6 +86,7 @@ export class CustomerController extends Controller {
    * @param limit Items per page (default: 10)
    * @param sortBy Field to sort by (default: createdAt)
    * @param order Sort order (default: desc)
+   * @param search Full-text search query across all customer fields
    */
   @Get()
   @SuccessResponse("200", "Successfully retrieved customers")
@@ -93,13 +94,15 @@ export class CustomerController extends Controller {
     @Query() page?: number,
     @Query() limit?: number,
     @Query() sortBy?: string,
-    @Query() order?: "asc" | "desc"
+    @Query() order?: "asc" | "desc",
+    @Query() search?: string
   ): Promise<PaginatedCustomerListResponse> {
     const result = await this.customerService.getAllCustomersPaginated({
       page,
       limit,
       sortBy,
       order,
+      search,
     });
     return {
       success: true,

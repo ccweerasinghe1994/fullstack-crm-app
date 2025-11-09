@@ -48,6 +48,7 @@ export function useCustomersPaginated(params: PaginationParams) {
       if (params.limit) searchParams.append("limit", params.limit.toString());
       if (params.sortBy) searchParams.append("sortBy", params.sortBy);
       if (params.order) searchParams.append("order", params.order);
+      if (params.search) searchParams.append("search", params.search);
 
       const response = await apiGet<PaginatedResponse<any>>(
         `/api/customers?${searchParams.toString()}`
