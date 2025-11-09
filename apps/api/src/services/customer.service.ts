@@ -5,12 +5,22 @@ import {
 } from "@crm/shared";
 import type { Customer } from "../generated/prisma";
 import type { ICustomerRepository } from "../repositories/customer.repository";
+import type {
+  PaginatedResponse,
+  PaginationParams,
+} from "../types/pagination.types";
 
 export class CustomerService {
   constructor(private customerRepository: ICustomerRepository) {}
 
   async getAllCustomers(): Promise<Customer[]> {
     return await this.customerRepository.findAll();
+  }
+
+  async getAllCustomersPaginated(
+    params: PaginationParams
+  ): Promise<PaginatedResponse<Customer>> {
+    return await this.customerRepository.findAllPaginated(params);
   }
 
   async getCustomerById(id: string): Promise<Customer> {

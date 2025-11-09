@@ -5,7 +5,6 @@
 import type {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
 import {
@@ -35,10 +34,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { PaginationMeta, PaginationParams } from "../../types/pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  meta?: PaginationMeta;
+  pagination?: PaginationParams;
+  onPaginationChange?: (pagination: PaginationParams) => void;
   searchKey?: string;
   searchPlaceholder?: string;
 }
@@ -46,10 +49,12 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  meta,
+  pagination,
+  onPaginationChange,
   searchKey = "email",
   searchPlaceholder = "Filter emails...",
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -57,22 +62,36 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  // Use server-side pagination if meta is provided
+  const isServerSide = !!meta && !!pagination && !!onPaginationChange;
+
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
+    manualPagination: isServerSide,
+    manualSorting: isServerSide,
+    pageCount: meta?.totalPages ?? -1,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    ...(isServerSide
+      ? {}
+      : {
+          getPaginationRowModel: getPaginationRowModel(),
+          getSortedRowModel: getSortedRowModel(),
+          getFilteredRowModel: getFilteredRowModel(),
+        }),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      ...(isServerSide && {
+        pagination: {
+          pageIndex: (pagination.page ?? 1) - 1,
+          pageSize: pagination.limit ?? 10,
+        },
+      }),
     },
   });
 
@@ -166,27 +185,64 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="flex items-center justify-between space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {isServerSide ? (
+            <>
+              Showing {(meta!.page - 1) * meta!.limit + 1} to{" "}
+              {Math.min(meta!.page * meta!.limit, meta!.total)} of {meta!.total}{" "}
+              results
+            </>
+          ) : (
+            <>
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected
+            </>
+          )}
         </div>
         <div className="flex items-center space-x-2">
           <div className="text-sm text-muted-foreground">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            Page{" "}
+            {isServerSide
+              ? meta!.page
+              : table.getState().pagination.pageIndex + 1}{" "}
+            of {isServerSide ? meta!.totalPages : table.getPageCount()}
           </div>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => {
+              if (isServerSide && pagination && onPaginationChange) {
+                onPaginationChange({
+                  ...pagination,
+                  page: (pagination.page ?? 1) - 1,
+                });
+              } else {
+                table.previousPage();
+              }
+            }}
+            disabled={
+              isServerSide
+                ? !meta?.hasPreviousPage
+                : !table.getCanPreviousPage()
+            }
           >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => {
+              if (isServerSide && pagination && onPaginationChange) {
+                onPaginationChange({
+                  ...pagination,
+                  page: (pagination.page ?? 1) + 1,
+                });
+              } else {
+                table.nextPage();
+              }
+            }}
+            disabled={
+              isServerSide ? !meta?.hasNextPage : !table.getCanNextPage()
+            }
           >
             Next
           </Button>

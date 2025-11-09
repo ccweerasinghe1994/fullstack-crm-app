@@ -1,7 +1,14 @@
 import type { Customer, PrismaClient } from "../generated/prisma";
+import type {
+  PaginatedResponse,
+  PaginationParams,
+} from "../types/pagination.types";
 
 export interface ICustomerRepository {
   findAll(): Promise<Customer[]>;
+  findAllPaginated(
+    params: PaginationParams
+  ): Promise<PaginatedResponse<Customer>>;
   findById(id: string): Promise<Customer | null>;
   findByEmail(email: string): Promise<Customer | null>;
   create(
@@ -22,6 +29,41 @@ export class CustomerRepository implements ICustomerRepository {
     return await this.prisma.customer.findMany({
       orderBy: { createdAt: "desc" },
     });
+  }
+
+  async findAllPaginated(
+    params: PaginationParams
+  ): Promise<PaginatedResponse<Customer>> {
+    const page = params.page || 1;
+    const limit = params.limit || 10;
+    const sortBy = params.sortBy || "createdAt";
+    const order = params.order || "desc";
+
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination metadata
+    const total = await this.prisma.customer.count();
+
+    // Fetch paginated data
+    const data = await this.prisma.customer.findMany({
+      skip,
+      take: limit,
+      orderBy: { [sortBy]: order },
+    });
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    };
   }
 
   async findById(id: string): Promise<Customer | null> {

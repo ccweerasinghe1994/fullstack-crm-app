@@ -7,19 +7,27 @@ import { CustomerTableSkeleton } from "../../components/customers/CustomerTableS
 import { DataTable } from "../../components/customers/data-table";
 import { DeleteCustomerDialog } from "../../components/customers/DeleteCustomerDialog";
 import { EditCustomerDialog } from "../../components/customers/EditCustomerDialog";
-import { useCustomers } from "../../hooks/useCustomers";
+import { useCustomersPaginated } from "../../hooks/useCustomers";
 import type { Customer } from "../../types/customer";
+import type { PaginationParams } from "../../types/pagination";
 
 export const Route = createFileRoute("/customers/")({
   component: CustomersPage,
 });
 
 function CustomersPage() {
-  const { data, isLoading, error } = useCustomers();
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
   const [deletingCustomer, setDeletingCustomer] = useState<Customer | null>(
     null
   );
+  const [pagination, setPagination] = useState<PaginationParams>({
+    page: 1,
+    limit: 10,
+    sortBy: "createdAt",
+    order: "desc",
+  });
+
+  const { data, isLoading, error } = useCustomersPaginated(pagination);
 
   const columns = createColumns({
     onEdit: (customer) => setEditingCustomer(customer),
@@ -56,6 +64,9 @@ function CustomersPage() {
           <DataTable
             columns={columns}
             data={data.data}
+            meta={data.meta}
+            pagination={pagination}
+            onPaginationChange={setPagination}
             searchKey="email"
             searchPlaceholder="Search by email..."
           />

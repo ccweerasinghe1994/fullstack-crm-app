@@ -11,24 +11,47 @@ import type {
   DeleteCustomerResponse,
   UpdateCustomerInput,
 } from "../types/customer";
+import type { PaginatedResponse, PaginationParams } from "../types/pagination";
 
 // Query keys
 export const CUSTOMER_KEYS = {
   all: ["customers"] as const,
   lists: () => [...CUSTOMER_KEYS.all, "list"] as const,
-  list: () => [...CUSTOMER_KEYS.lists()] as const,
+  list: (params?: PaginationParams) =>
+    [...CUSTOMER_KEYS.lists(), params] as const,
   details: () => [...CUSTOMER_KEYS.all, "detail"] as const,
   detail: (id: string) => [...CUSTOMER_KEYS.details(), id] as const,
 };
 
 /**
- * Fetch all customers
+ * Fetch all customers (legacy - client-side pagination)
  */
 export function useCustomers() {
   return useQuery({
     queryKey: CUSTOMER_KEYS.list(),
     queryFn: async () => {
       const response = await apiGet<CustomerListResponse>("/api/customers");
+      return response;
+    },
+  });
+}
+
+/**
+ * Fetch customers with server-side pagination
+ */
+export function useCustomersPaginated(params: PaginationParams) {
+  return useQuery({
+    queryKey: CUSTOMER_KEYS.list(params),
+    queryFn: async () => {
+      const searchParams = new URLSearchParams();
+      if (params.page) searchParams.append("page", params.page.toString());
+      if (params.limit) searchParams.append("limit", params.limit.toString());
+      if (params.sortBy) searchParams.append("sortBy", params.sortBy);
+      if (params.order) searchParams.append("order", params.order);
+
+      const response = await apiGet<PaginatedResponse<any>>(
+        `/api/customers?${searchParams.toString()}`
+      );
       return response;
     },
   });

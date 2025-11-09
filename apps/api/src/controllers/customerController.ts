@@ -6,6 +6,7 @@ import {
   Path,
   Post,
   Put,
+  Query,
   Response,
   Route,
   SuccessResponse,
@@ -17,6 +18,7 @@ import type {
   UpdateCustomerInput,
 } from "../models/customer.model";
 import type { CustomerService } from "../services/customer.service";
+import type { PaginationMeta } from "../types/pagination.types";
 
 /**
  * Generic API error response
@@ -35,6 +37,15 @@ interface CustomerListResponse {
   success: true;
   data: CustomerModel[];
   count: number;
+}
+
+/**
+ * Response with paginated list of customers
+ */
+interface PaginatedCustomerListResponse {
+  success: true;
+  data: CustomerModel[];
+  meta: PaginationMeta;
 }
 
 /**
@@ -69,17 +80,31 @@ export class CustomerController extends Controller {
   }
 
   /**
-   * Retrieves all customers from the database
-   * @summary Get all customers
+   * Retrieves all customers from the database with pagination
+   * @summary Get all customers (paginated)
+   * @param page Page number (default: 1)
+   * @param limit Items per page (default: 10)
+   * @param sortBy Field to sort by (default: createdAt)
+   * @param order Sort order (default: desc)
    */
   @Get()
   @SuccessResponse("200", "Successfully retrieved customers")
-  public async getAllCustomers(): Promise<CustomerListResponse> {
-    const customers = await this.customerService.getAllCustomers();
+  public async getAllCustomers(
+    @Query() page?: number,
+    @Query() limit?: number,
+    @Query() sortBy?: string,
+    @Query() order?: "asc" | "desc"
+  ): Promise<PaginatedCustomerListResponse> {
+    const result = await this.customerService.getAllCustomersPaginated({
+      page,
+      limit,
+      sortBy,
+      order,
+    });
     return {
       success: true,
-      data: customers,
-      count: customers.length,
+      data: result.data,
+      meta: result.meta,
     };
   }
 
