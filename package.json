@@ -9,16 +9,34 @@
     "dev:web": "pnpm --filter @crm/web dev",
     "build": "pnpm --filter \"@crm/*\" build",
     "test": "pnpm --filter \"@crm/*\" test",
-    "test:e2e": "pnpm --filter \"@crm/*\" test:e2e",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
     "lint": "pnpm --filter \"@crm/*\" lint",
     "type-check": "pnpm --filter \"@crm/*\" type-check",
+    "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
+    "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
+    "docker:dev:build": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
     "docker:logs": "docker-compose logs -f",
-    "docker:reset": "docker-compose down -v && docker-compose up -d"
+    "docker:logs:api": "docker-compose logs -f api",
+    "docker:logs:web": "docker-compose logs -f web",
+    "docker:clean": "docker-compose down -v --remove-orphans",
+    "docker:reset": "docker-compose down -v && docker-compose build && docker-compose up -d",
+    "docker:ps": "docker-compose ps",
+    "docker:restart": "docker-compose restart",
+    "docker:restart:api": "docker-compose restart api",
+    "docker:restart:web": "docker-compose restart web"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.56.1"
+  }
 }

@@ -1,49 +1,102 @@
-/**
- * Customers list page
- */
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { createColumns } from "../../components/customers/columns";
 import { CreateCustomerDialog } from "../../components/customers/CreateCustomerDialog";
-import { CustomerTable } from "../../components/customers/CustomerTable";
 import { CustomerTableSkeleton } from "../../components/customers/CustomerTableSkeleton";
-import { useCustomers } from "../../hooks/useCustomers";
+import { DataTable } from "../../components/customers/data-table";
+import { DeleteCustomerDialog } from "../../components/customers/DeleteCustomerDialog";
+import { EditCustomerDialog } from "../../components/customers/EditCustomerDialog";
+import { useCustomersPaginated } from "../../hooks/useCustomers";
+import type { Customer } from "../../types/customer";
+import type { PaginationParams } from "../../types/pagination";
 
 export const Route = createFileRoute("/customers/")({
   component: CustomersPage,
 });
 
 function CustomersPage() {
-  const { data, isLoading, error } = useCustomers();
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [deletingCustomer, setDeletingCustomer] = useState<Customer | null>(
+    null
+  );
+  const [pagination, setPagination] = useState<PaginationParams>({
+    page: 1,
+    limit: 10,
+    sortBy: "createdAt",
+    order: "desc",
+    search: "",
+  });
+
+  const { data, isLoading, isFetching, error } =
+    useCustomersPaginated(pagination);
+
+  const columns = createColumns({
+    onEdit: (customer) => setEditingCustomer(customer),
+    onDelete: (customer) => setDeletingCustomer(customer),
+  });
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Customers</h1>
-          <p className="text-muted-foreground">
-            Manage your customer accounts and information
-          </p>
+    <div className="container mx-auto py-6 px-4 sm:py-10">
+      <div className="space-y-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              Customers
+            </h1>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              Manage your customer accounts and information
+            </p>
+          </div>
+          <CreateCustomerDialog />
         </div>
-        <CreateCustomerDialog />
+
+        {error ? (
+          <Alert variant="destructive">
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              {error instanceof Error
+                ? error.message
+                : "Failed to load customers"}
+            </AlertDescription>
+          </Alert>
+        ) : isLoading ? (
+          <CustomerTableSkeleton />
+        ) : data ? (
+          <div className="relative">
+            {isFetching && (
+              <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-10 rounded-lg">
+                <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-md border shadow-sm">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  <span className="text-sm text-muted-foreground">
+                    Loading...
+                  </span>
+                </div>
+              </div>
+            )}
+            <DataTable
+              columns={columns}
+              data={data.data}
+              meta={data.meta}
+              pagination={pagination}
+              onPaginationChange={setPagination}
+              searchPlaceholder="Search customers..."
+            />
+          </div>
+        ) : null}
       </div>
 
-      {error && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            {error instanceof Error
-              ? error.message
-              : "Failed to load customers. Please try again."}
-          </AlertDescription>
-        </Alert>
-      )}
+      <EditCustomerDialog
+        customerId={editingCustomer?.id || ""}
+        open={!!editingCustomer}
+        onOpenChange={(open) => !open && setEditingCustomer(null)}
+      />
 
-      {isLoading ? (
-        <CustomerTableSkeleton />
-      ) : data ? (
-        <CustomerTable customers={data.data} />
-      ) : null}
+      <DeleteCustomerDialog
+        customer={deletingCustomer}
+        open={!!deletingCustomer}
+        onOpenChange={(open) => !open && setDeletingCustomer(null)}
+      />
     </div>
   );
 }

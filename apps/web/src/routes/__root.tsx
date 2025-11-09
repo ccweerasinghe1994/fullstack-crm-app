@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -26,14 +27,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold">CRM</h1>
             </div>
-            <nav className="flex gap-2">
-              <Link to="/">
-                <Button variant="ghost">Home</Button>
-              </Link>
+            <nav className="flex flex-1 gap-2">
               <Link to="/customers">
                 <Button variant="ghost">Customers</Button>
               </Link>
             </nav>
+            <ModeToggle />
           </div>
         </header>
         <main>

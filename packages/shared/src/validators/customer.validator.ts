@@ -11,8 +11,8 @@ export const customerSchema = z.object({
   city: z.string().optional().nullable(),
   state: z.string().optional().nullable(),
   country: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const createCustomerSchema = customerSchema.omit({
