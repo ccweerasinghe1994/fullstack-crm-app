@@ -29,8 +29,11 @@ export function EditCustomerDialog({ customerId }: EditCustomerDialogProps) {
   const updateCustomer = useUpdateCustomer();
 
   const handleSubmit = (data: UpdateCustomerInput) => {
+    // Remove id from data if it exists (id comes from path parameter, not body)
+    const { id: _id, ...dataWithoutId } = data as any;
+    
     updateCustomer.mutate(
-      { id: customerId, data },
+      { id: customerId, data: dataWithoutId },
       {
         onSuccess: (updatedCustomer) => {
           toast.success("Customer updated successfully", {
