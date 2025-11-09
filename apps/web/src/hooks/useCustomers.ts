@@ -37,14 +37,14 @@ export function useCustomers() {
 /**
  * Fetch a single customer by ID
  */
-export function useCustomer(id: string) {
+export function useCustomer(id: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: CUSTOMER_KEYS.detail(id),
     queryFn: async () => {
       const response = await apiGet<CustomerResponse>(`/api/customers/${id}`);
       return response.data;
     },
-    enabled: !!id,
+    enabled: options?.enabled ?? !!id,
   });
 }
 

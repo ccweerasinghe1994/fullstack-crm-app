@@ -10,23 +10,30 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDeleteCustomer } from "../../hooks/useCustomers";
 import type { Customer } from "../../types/customer";
 
 interface DeleteCustomerDialogProps {
-  customer: Customer;
+  customer: Customer | null;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function DeleteCustomerDialog({ customer }: DeleteCustomerDialogProps) {
-  const [open, setOpen] = useState(false);
+export function DeleteCustomerDialog({
+  customer,
+  open: controlledOpen,
+  onOpenChange,
+}: DeleteCustomerDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const setOpen = onOpenChange || setInternalOpen;
   const deleteCustomer = useDeleteCustomer();
 
   const handleDelete = () => {
+    if (!customer) return;
     deleteCustomer.mutate(customer.id, {
       onSuccess: () => {
         toast.success("Customer deleted successfully", {
@@ -45,13 +52,10 @@ export function DeleteCustomerDialog({ customer }: DeleteCustomerDialogProps) {
     });
   };
 
+  if (!customer) return null;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <Trash2 className="h-4 w-4 text-destructive" />
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete Customer</DialogTitle>

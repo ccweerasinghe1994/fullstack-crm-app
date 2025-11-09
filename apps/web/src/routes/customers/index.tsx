@@ -1,13 +1,14 @@
-/**
- * Customers list page
- */
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { createColumns } from "../../components/customers/columns";
 import { CreateCustomerDialog } from "../../components/customers/CreateCustomerDialog";
-import { CustomerTable } from "../../components/customers/CustomerTable";
 import { CustomerTableSkeleton } from "../../components/customers/CustomerTableSkeleton";
+import { DataTable } from "../../components/customers/data-table";
+import { DeleteCustomerDialog } from "../../components/customers/DeleteCustomerDialog";
+import { EditCustomerDialog } from "../../components/customers/EditCustomerDialog";
 import { useCustomers } from "../../hooks/useCustomers";
+import type { Customer } from "../../types/customer";
 
 export const Route = createFileRoute("/customers/")({
   component: CustomersPage,
@@ -15,35 +16,61 @@ export const Route = createFileRoute("/customers/")({
 
 function CustomersPage() {
   const { data, isLoading, error } = useCustomers();
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [deletingCustomer, setDeletingCustomer] = useState<Customer | null>(
+    null
+  );
+
+  const columns = createColumns({
+    onEdit: (customer) => setEditingCustomer(customer),
+    onDelete: (customer) => setDeletingCustomer(customer),
+  });
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Customers</h1>
-          <p className="text-muted-foreground">
-            Manage your customer accounts and information
-          </p>
+    <div className="container mx-auto py-10">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+            <p className="text-muted-foreground">
+              Manage your customer accounts and information
+            </p>
+          </div>
+          <CreateCustomerDialog />
         </div>
-        <CreateCustomerDialog />
+
+        {error ? (
+          <Alert variant="destructive">
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              {error instanceof Error
+                ? error.message
+                : "Failed to load customers"}
+            </AlertDescription>
+          </Alert>
+        ) : isLoading ? (
+          <CustomerTableSkeleton />
+        ) : data ? (
+          <DataTable
+            columns={columns}
+            data={data.data}
+            searchKey="email"
+            searchPlaceholder="Search by email..."
+          />
+        ) : null}
       </div>
 
-      {error && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            {error instanceof Error
-              ? error.message
-              : "Failed to load customers. Please try again."}
-          </AlertDescription>
-        </Alert>
-      )}
+      <EditCustomerDialog
+        customerId={editingCustomer?.id || ""}
+        open={!!editingCustomer}
+        onOpenChange={(open) => !open && setEditingCustomer(null)}
+      />
 
-      {isLoading ? (
-        <CustomerTableSkeleton />
-      ) : data ? (
-        <CustomerTable customers={data.data} />
-      ) : null}
+      <DeleteCustomerDialog
+        customer={deletingCustomer}
+        open={!!deletingCustomer}
+        onOpenChange={(open) => !open && setDeletingCustomer(null)}
+      />
     </div>
   );
 }
