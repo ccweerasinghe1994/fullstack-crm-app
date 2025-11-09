@@ -27,9 +27,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
               <h1 className="text-xl font-bold">CRM</h1>
             </div>
             <nav className="flex gap-2">
-              <Link to="/">
-                <Button variant="ghost">Home</Button>
-              </Link>
               <Link to="/customers">
                 <Button variant="ghost">Customers</Button>
               </Link>
