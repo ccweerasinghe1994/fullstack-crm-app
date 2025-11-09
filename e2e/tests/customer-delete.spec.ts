@@ -1,16 +1,15 @@
-import { test, expect } from "@playwright/test";
-import {
-  CustomersPage,
-  DeleteCustomerDialog,
-} from "../fixtures/page-objects";
+import { expect, test } from "@playwright/test";
+import { CustomersPage, DeleteCustomerDialog } from "../fixtures/page-objects";
 
 test.describe("Delete Customer", () => {
   test("should delete a customer", async ({ page }) => {
+    // Start with fresh page state
+    await page.goto("/customers");
     const customersPage = new CustomersPage(page);
     const deleteDialog = new DeleteCustomerDialog(page);
 
     await customersPage.goto();
-    
+
     // Wait for full initialization
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(500);
@@ -42,8 +41,10 @@ test.describe("Delete Customer", () => {
     const customersPage = new CustomersPage(page);
     const deleteDialog = new DeleteCustomerDialog(page);
 
-    await customersPage.goto();
+    // Start with fresh page state
+    await page.goto("/customers");
     await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(500);
 
     const customerEmail = await page
       .getByRole("row")
@@ -56,10 +57,12 @@ test.describe("Delete Customer", () => {
     await customersPage.clickDelete(customerEmail!);
     await deleteDialog.cancel();
 
-    // Verify customer still exists by searching for it
-    await customersPage.search(customerEmail!);
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByText(customerEmail!)).toBeVisible();
+    // Wait for dialog to close
+    await page.waitForTimeout(500);
+
+    // Verify customer still exists in the current table view (no search needed)
+    // Use table row to avoid strict mode violations
+    const tableRow = page.getByRole("row").filter({ hasText: customerEmail! });
+    await expect(tableRow).toBeVisible();
   });
 });
-

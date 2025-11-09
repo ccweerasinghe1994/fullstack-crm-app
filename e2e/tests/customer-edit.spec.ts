@@ -1,8 +1,5 @@
-import { test, expect } from "@playwright/test";
-import {
-  CustomersPage,
-  EditCustomerDialog,
-} from "../fixtures/page-objects";
+import { expect, test } from "@playwright/test";
+import { CustomersPage, EditCustomerDialog } from "../fixtures/page-objects";
 
 test.describe("Edit Customer", () => {
   test("should edit customer details", async ({ page }) => {
@@ -10,7 +7,7 @@ test.describe("Edit Customer", () => {
     const editDialog = new EditCustomerDialog(page);
 
     await customersPage.goto();
-    
+
     // Wait for full initialization
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(500);
@@ -33,8 +30,8 @@ test.describe("Edit Customer", () => {
       page.getByText(/customer updated successfully/i)
     ).toBeVisible();
 
-    // Verify update in table
-    await expect(page.getByText("UpdatedName")).toBeVisible();
+    // Verify update in table (scope to table row to avoid strict mode violation)
+    const tableRow = page.getByRole("row").filter({ hasText: firstEmail! });
+    await expect(tableRow).toContainText("UpdatedName");
   });
 });
-
