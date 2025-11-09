@@ -13,7 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import type { Customer } from "../../types/customer";
 
 interface ColumnsProps {
@@ -50,13 +57,21 @@ export const createColumns = ({
   {
     accessorKey: "firstName",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hover:bg-accent"
         >
           First Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {isSorted === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : isSorted === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
+          )}
         </Button>
       );
     },
@@ -67,13 +82,21 @@ export const createColumns = ({
   {
     accessorKey: "lastName",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hover:bg-accent"
         >
           Last Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {isSorted === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : isSorted === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
+          )}
         </Button>
       );
     },
@@ -84,13 +107,21 @@ export const createColumns = ({
   {
     accessorKey: "email",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hover:bg-accent"
         >
           Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {isSorted === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : isSorted === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
+          )}
         </Button>
       );
     },
@@ -123,13 +154,21 @@ export const createColumns = ({
   {
     accessorKey: "createdAt",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hover:bg-accent"
         >
           Created
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {isSorted === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : isSorted === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
+          )}
         </Button>
       );
     },

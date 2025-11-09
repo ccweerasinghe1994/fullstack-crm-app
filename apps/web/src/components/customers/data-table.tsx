@@ -65,6 +65,48 @@ export function DataTable<TData, TValue>({
   // Use server-side pagination if meta is provided
   const isServerSide = !!meta && !!pagination && !!onPaginationChange;
 
+  // Handle sorting changes for server-side
+  const handleSortingChange = React.useCallback(
+    (updater: any) => {
+      if (isServerSide && pagination && onPaginationChange) {
+        const newSorting =
+          typeof updater === "function" ? updater([]) : updater;
+
+        if (newSorting.length > 0) {
+          const sort = newSorting[0];
+          onPaginationChange({
+            ...pagination,
+            sortBy: sort.id,
+            order: sort.desc ? "desc" : "asc",
+            page: 1, // Reset to first page on sort
+          });
+        } else {
+          // Clear sorting
+          onPaginationChange({
+            ...pagination,
+            sortBy: "createdAt",
+            order: "desc",
+            page: 1,
+          });
+        }
+      }
+    },
+    [isServerSide, pagination, onPaginationChange]
+  );
+
+  // Convert server pagination to TanStack sorting state
+  const sortingState = React.useMemo(() => {
+    if (isServerSide && pagination?.sortBy) {
+      return [
+        {
+          id: pagination.sortBy,
+          desc: pagination.order === "desc",
+        },
+      ];
+    }
+    return [];
+  }, [isServerSide, pagination?.sortBy, pagination?.order]);
+
   const table = useReactTable({
     data,
     columns,
@@ -72,6 +114,7 @@ export function DataTable<TData, TValue>({
     manualSorting: isServerSide,
     pageCount: meta?.totalPages ?? -1,
     onColumnFiltersChange: setColumnFilters,
+    onSortingChange: isServerSide ? handleSortingChange : undefined,
     getCoreRowModel: getCoreRowModel(),
     ...(isServerSide
       ? {}
@@ -86,6 +129,7 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection,
+      sorting: sortingState,
       ...(isServerSide && {
         pagination: {
           pageIndex: (pagination.page ?? 1) - 1,
